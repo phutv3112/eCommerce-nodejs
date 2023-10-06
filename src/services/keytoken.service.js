@@ -22,10 +22,19 @@ class KeyTokenService {
         }
     }
     static findByUserId = async (userId) => {
-        return await keyModel.findOne({ user: Types.ObjectId(userId) }).lean()
+        return await keyModel.findOne({ user: new Types.ObjectId(userId) }).lean()
     }
     static removeKeyById = async (id) => {
         return await keyModel.remove(id)
+    }
+    static findByRefreshTokenUsed = async (refreshToken) => {
+        return await keyModel.findOne({ refreshTokensUsed: refreshToken }).lean()
+    }
+    static findByRefreshToken = async (refreshToken) => {
+        return await keyModel.findOne({ refreshToken }).lean()
+    }
+    static deleteKeyById = async (userId) => {
+        return await keyModel.deleteOne({ user: userId })
     }
 }
 module.exports = KeyTokenService

@@ -30,6 +30,9 @@ const createTokenPair = async (payload, publicKey, privateKey) => {
         return null
     }
 }
+const verifyJwt = (token, key) => {
+    return jwt.verify(token, key)
+}
 const authentication = asyncHandler(async (req, res, next) => {
     const userId = req.headers[HEADER.CLIENT_ID]
     if (!userId) throw new UnauthorizedError('Invalid request')
@@ -49,5 +52,6 @@ const authentication = asyncHandler(async (req, res, next) => {
 })
 module.exports = {
     createTokenPair,
-    authentication
+    authentication,
+    verifyJwt
 }

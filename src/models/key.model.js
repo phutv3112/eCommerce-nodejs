@@ -2,8 +2,8 @@
 
 const { Schema, model } = require("mongoose");
 
-const DOCUMENT_NAME = 'key'
-const COLLECTION_NAME = 'keys'
+const DOCUMENT_NAME = 'key-token'
+const COLLECTION_NAME = 'key-tokens'
 
 const keySchema = new Schema({
     user: {
