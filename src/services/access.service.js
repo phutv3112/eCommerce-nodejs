@@ -81,30 +81,18 @@ class AccessService {
         console.log('delKey:::', delKey)
         return delKey
     }
-    static handlerRefreshToken = async (refreshToken) => {
-        const foundToken = await KeyTokenService.findByRefreshTokenUsed(refreshToken)
-        if (foundToken) {
-            const { userId, email } = verifyJwt(refreshToken, foundToken.privateKey)
-            console.log({ userId, email })
+    static handlerRefreshToken = async ({ refreshToken, user, keyStore }) => {
+        const { userId, email } = user;
+        if (keyStore.refreshTokenUsed.includes(refreshToken)) {
             await KeyTokenService.deleteKeyById(userId)
-            throw ForbiddenError('Something went wrong!')
+            throw new ForbiddenError('Something went wrong!')
         }
-        const holderToken = await KeyTokenService.findByRefreshToken(refreshToken)
-        if (!holderToken) throw UnauthorizedError('Shop not registered')
-        const { userId, email } = await verifyJwt(refreshToken, holderToken.privateKey)
+        if (keyStore.refreshToken !== refreshToken) {
+            throw new UnauthorizedError('Shop not registered!')
+        }
         const foundShop = await findShopByEmail({ email })
-        if (!foundShop) throw new UnauthorizedError('Shop not registered')
-
-        const tokens = await createTokenPair({ userId: foundShop._id, email }, holderToken.publicKey, holderToken.privateKey)
-        // await holderToken.update({
-        //     $set: {
-        //         refreshToken: tokens.refreshToken
-        //     },
-        //     $addToSet: {
-        //         refreshTokenUsed: refreshToken
-        //     }
-        // })
-        await keyModel.findOneAndUpdate({ _id: holderToken._id }, {
+        const tokens = await createTokenPair({ userId: foundShop._id, email }, keyStore.publicKey, keyStore.privateKey)
+        await keyModel.findOneAndUpdate({ _id: keyStore._id }, {
             $set: {
                 refreshToken: tokens.refreshToken
             },
