@@ -1,5 +1,5 @@
 const express = require('express');
-const { asyncHandler } = require('../../helpers/asyncHandler');
+const asyncHandler = require('../../helpers/asyncHandler');
 const router = express.Router();
 const { authentication } = require('../../auth/authUtils');
 const DiscountController = require('../../controllers/discount.controller');

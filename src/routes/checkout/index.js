@@ -1,5 +1,5 @@
 const CheckoutController = require('../../controllers/checkout.controller')
-const { asyncHandler } = require('../../helpers/asyncHandler')
+const asyncHandler = require('../../helpers/asyncHandler')
 
 const router = require('express').Router()
 

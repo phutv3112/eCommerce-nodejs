@@ -8,6 +8,7 @@ const { findAllDraftsForShop, publishProductByShop,
     searchProductByUser, findAllProducts,
     updateProductById } = require('../models/repo/product.repo');
 const { removeUndefineData, updateNestedObjectParse } = require("../utils");
+const { pushNotiToSystem } = require('./notification.service');
 
 class ProductFactory {
     static productRegistry = {}
@@ -72,8 +73,20 @@ class Product {
         if (newProduct) {
             await insertInventory({
                 productId: newProduct._id,
-                shopId: this.product_shop, stock: this.product_quantity
+                shopId: this.product_shop,
+                stock: this.product_quantity
             })
+            //push notification
+            pushNotiToSystem({
+                type: 'SHOP-001',
+                receivedId: 1,
+                senderId: this.product_shop,
+                options: {
+                    product_name: this.product_name,
+                    shop_name: this.product_shop
+                }
+            }).then(rs => console.log(rs))
+                .catch(console.error)
         }
         return newProduct;
     }

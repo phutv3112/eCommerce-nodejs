@@ -1,7 +1,7 @@
 const { model, Schema } = require('mongoose'); // Erase if already required
 
-const DOCUMENT_NAME = 'Discount'
-const COLLECTION_NAME = 'Discounts'
+const DOCUMENT_NAME = 'discount'
+const COLLECTION_NAME = 'discounts'
 
 const discountSchema = new Schema({
     discount_name: { type: String, required: true },

@@ -14,6 +14,13 @@ app.use(express.json())
 app.use(express.urlencoded({
     extended: true
 }))
+
+//test pub sub redis
+// require('./tests/inventory.test');
+// const productTest = require('./tests/product.test');
+// productTest.purchaseProduct('product:001', 100);
+
+//
 //init db
 require('./db/init.mongodb')
 //init routes   

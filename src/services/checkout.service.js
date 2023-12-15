@@ -69,7 +69,7 @@ class CheckoutService {
     }
 
     static async orderByUser({
-        shop_order_ids_new,
+        shop_order_id_new,
         cartId,
         userId,
         user_address = {},
@@ -78,7 +78,7 @@ class CheckoutService {
         const { shop_order_ids_new, checkout_order } = await CheckoutService.checkoutReview({
             cartId,
             userId,
-            shop_order_ids
+            shop_order_id_new
         })
         //check lại xem co vượt tồn kho hay không
         //get new array products
